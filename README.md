@@ -7,4 +7,7 @@
 ```bash
 # add helm repository
 helm repo add el-public https://edgelevel.github.io/helm-charts
+
+# publish chart (from local machine)
+./publish.sh argocd
 ```
