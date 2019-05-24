@@ -2,7 +2,7 @@
 
 ```bash
 # add helm repository
-helm repo add el-public https://edgelevel.github.io/helm-charts
+helm repo add edgelevel-public https://edgelevel.github.io/helm-charts
 ```
 
 | Name | Version | Description |
@@ -12,6 +12,6 @@ helm repo add el-public https://edgelevel.github.io/helm-charts
 ### Development
 
 ```bash
-# publish chart (from local machine)
+# publish chart from local machine
 ./publish.sh argocd
 ```
