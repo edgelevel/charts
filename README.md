@@ -1,5 +1,10 @@
 # helm-charts
 
+[![Build Status][travis-image]][travis-url]
+
+[travis-image]: https://travis-ci.org/edgelevel/helm-charts.svg?branch=master
+[travis-url]: https://travis-ci.org/edgelevel/helm-charts
+
 ```bash
 # add helm repository
 helm repo add edgelevel-public https://edgelevel.github.io/helm-charts
