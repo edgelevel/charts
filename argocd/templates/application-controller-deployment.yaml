@@ -42,7 +42,14 @@ spec:
           ports:
             - containerPort: {{ .Values.applicationController.containerPort }}
           readinessProbe:
-            tcpSocket:
+            httpGet:
+              path: /healthz
+              port: {{ .Values.applicationController.containerPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
               port: {{ .Values.applicationController.containerPort }}
             initialDelaySeconds: 5
             periodSeconds: 10
