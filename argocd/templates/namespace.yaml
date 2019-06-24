@@ -1,0 +1,14 @@
+{{- if .Values.namespace.create }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: argocd
+  labels:
+    app.kubernetes.io/name: {{ include "argo-cd.name" . }}
+    helm.sh/chart: {{ include "argo-cd.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/component: argocd
+    app.kubernetes.io/part-of: {{ include "argo-cd.name" . }}
+{{- end -}}

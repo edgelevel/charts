@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-server
+  labels:
+    app.kubernetes.io/name: {{ include "argo-cd.name" . }}-server
+    helm.sh/chart: {{ include "argo-cd.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: {{ include "argo-cd.name" . }}
+spec:
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: {{ .Values.server.containerPortHttp }}
+  - name: https
+    protocol: TCP
+    port: 443
+    targetPort: {{ .Values.server.containerPortHttp }}
+  selector:
+    app.kubernetes.io/name: {{ include "argo-cd.name" . }}-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-server-metrics  
+  labels:
+    app.kubernetes.io/name: {{ include "argo-cd.name" . }}-server
+    helm.sh/chart: {{ include "argo-cd.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: {{ include "argo-cd.name" . }}
+spec:
+  ports:
+  - name: metrics
+    protocol: TCP
+    port: {{ .Values.server.containerPortMetrics }}
+    targetPort: {{ .Values.server.containerPortMetrics }}
+  selector:
+    app.kubernetes.io/name: {{ include "argo-cd.name" . }}-server

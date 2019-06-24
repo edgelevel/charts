@@ -1,9 +1,12 @@
+image:
+  repository: argoproj/argocd
+  tag: v1.1.0-rc2
+
 applicationController:
   containerPort: 8082
   servicePort: 8082
   image:
-    repository: argoproj/argocd
-    tag: v1.0.0
+    # repository and tag set through the global image setting  
     pullPolicy: Always
 
 dexServer:
@@ -16,6 +19,105 @@ dexServer:
     tag: v2.12.0
     pullPolicy: Always
   initImage:
-    repository: argoproj/argocd
-    tag: v1.0.0
+    # repository and tag set through the global image setting  
     pullPolicy: Always
+
+server:
+  containerPortHttp: 8080
+  containerPortMetrics: 8083
+  init:
+    repository: argoproj/argocd-ui
+    # tag set through the global image setting
+    pullPolicy: Always
+  image:
+    # repository and tag set through the global image setting 
+    pullPolicy: Always
+
+repoServer:
+  containerPortHttp: 8081
+  containerPortMetrics: 8084
+  image:
+    # repository and tag set through the global image setting 
+    pullPolicy: Always
+
+redis:
+  containerPort: 6379
+  image:
+    repository: redis
+    tag: v5.0.3
+    pullPolicy: Always
+
+namespace: 
+  create: false
+  labels: {}
+
+config:
+
+  secret:
+    create: false
+    admin:
+      password:
+      passwordMtime:
+
+  rbacPolicy:
+    csv:
+    # default: role:admin
+    default:
+
+  sso:
+    enabled: false
+
+    # Argo CD's externally facing base URL. Required for configuring SSO
+    url:
+
+    # A dex connector configuration. See documentation on how to configure SSO:
+    # https://github.com/argoproj/argo-cd/blob/master/docs/sso.md#2-configure-argocd-for-sso
+    dexConfig: {}
+    #   connectors:
+    #     - type: github
+    #       id: github
+    #       name: GitHub
+    #       config:
+    #         clientID: aabbccddeeff00112233
+    #         clientSecret: aaaaahhhhhheeeee55555544444ooooooo
+
+    # To configure Argo CD to delegate authenticate to your OIDC provider
+    # https://github.com/argoproj/argo-cd/blob/master/docs/sso.md#existing-oidc-provider
+    oidcConfig: {}
+      # name: Okta
+      # issuer: https://dev-123456.oktapreview.com
+      # clientID: aabbccddeeff00112233
+      # clientSecret:  aaaaahhhhhheeeee55555544444ooooooo
+
+
+  # https://github.com/argoproj/argo-cd/blob/master/docs/declarative-setup.md#repositories  
+  github: 
+    repositories: []
+    # - url: git@github.com:saksdirect/hbc-common-k8s.git
+    #   sshPrivateKeySecretName: github-hbc-common-k8s
+
+  # https://github.com/argoproj/argo-cd/blob/master/docs/declarative-setup.md#helm-chart-repositories
+  helm:
+    repositories: []
+    # - url: "https://saksdirect.github.io/helm-charts"
+
+
+  resource:
+    # Configuration to customize resource behavior (optional). Keys are in the form: group/Kind.
+    customizations: {}
+    # Configuration to completely ignore entire classes of resource group/kinds (optional).
+    # Excluding high-volume resources improves performance and memory usage, and reduces load and 
+    # bandwidth to the Kubernetes API server.
+    # These are globs, so a "*" will match all values.
+    # If you omit groups/kinds/clusters then they will match all groups/kind/clusters.
+    # NOTE: events.k8s.io and metrics.k8s.io are excluded by default
+    exclustions: {}
+  
+  # Configuration to add a config management plugin.
+  configManagementPlugins: 
+  
+  application:
+    # The metadata.label key name where Argo CD injects the app name as a tracking label (optional).
+    # Tracking labels are used to determine which resources need to be deleted when pruning.
+    # If omitted, Argo CD injects the app name into the label: 'app.kubernetes.io/instance'
+    instanceLabelKey:

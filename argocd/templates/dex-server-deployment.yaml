@@ -29,7 +29,7 @@ spec:
       serviceAccountName: argocd-dex-server
       initContainers:
         - name: copyutil
-          image: {{ .Values.dexServer.initImage.repository }}:{{ .Values.dexServer.initImage.tag }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.dexServer.initImage.pullPolicy }}
           command: [cp, /usr/local/bin/argocd-util, /shared]
           volumeMounts:
@@ -49,7 +49,7 @@ spec:
         {{- if .Values.dexServer.volumeMounts }}
         {{ toYaml .Values.dexServer.volumeMounts | nindent 8 | trim }}
         {{- end }}
-{{- with .Values.applicationController.resources }}
+{{- with .Values.dexServer.resources }}
           resources:
 {{ toYaml . | indent 12 }}
 {{- end }}        
@@ -59,22 +59,22 @@ spec:
       {{- if .Values.dexServer.volumes }}
       {{ toYaml .Values.dexServer.volumes | nindent 6 | trim }}
       {{- end }}}
-{{- with .Values.nodeSelector }}
+{{- with .Values.dexServer.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
 {{- end }}
-{{- with .Values.affinity }}
+{{- with .Values.dexServer.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
 {{- end }}
-{{- with .Values.tolerations }}
+{{- with .Values.dexServer.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
 {{- end }}
-{{- if .Values.podDnsPolicy }}
-      dnsPolicy: {{ .Values.podDnsPolicy }}
+{{- if .Values.dexServer.podDnsPolicy }}
+      dnsPolicy: {{ .Values.dexServer.podDnsPolicy }}
 {{- end }}
-{{- if .Values.podDnsConfig }}
+{{- if .Values.dexServer.podDnsConfig }}
       dnsConfig:
-{{ toYaml .Values.podDnsConfig | indent 8 }}
+{{ toYaml .Values.dexServer.podDnsConfig | indent 8 }}
 {{- end }}

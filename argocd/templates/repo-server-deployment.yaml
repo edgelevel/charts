@@ -1,0 +1,81 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-repo-server
+  labels:
+    app.kubernetes.io/name: {{ include "argo-cd.name" . }}-repo-server
+    helm.sh/chart: {{ include "argo-cd.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/component: repo-server
+    app.kubernetes.io/part-of: {{ include "argo-cd.name" . }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "argo-cd.name" . }}-repo-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "argo-cd.name" . }}-repo-server
+        helm.sh/chart: {{ include "argo-cd.chart" . }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion }}
+        app.kubernetes.io/component: repo-server
+        app.kubernetes.io/part-of: {{ include "argo-cd.name" . }}
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: argocd-repo-server
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.repoServer.image.pullPolicy }}
+          command:
+          - argocd-repo-server
+          - --redis
+          - argocd-redis:6379
+          ports:
+            - containerPort: {{ .Values.repoServer.containerPortHttp }}
+            - containerPort: {{ .Values.repoServer.containerPortMetrics }}
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.repoServer.containerPortHttp }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.repoServer.containerPortHttp }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+{{- with .Values.repoServer.resources }}
+          resources:
+{{ toYaml . | indent 12 }}
+{{- end }}
+{{- with .Values.repoServer.volumeMounts }}
+          volumeMounts:
+{{ toYaml . | indent 12 }}
+{{- end }}
+{{- with .Values.repoServer.volumes }}
+      volumes:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.repoServer.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.repoServer.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.repoServer.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- if .Values.repoServer.podDnsPolicy }}
+      dnsPolicy: {{ .Values.repoServer.podDnsPolicy }}
+{{- end }}
+{{- if .Values.repoServer.podDnsConfig }}
+      dnsConfig:
+{{ toYaml .Values.repoServer.podDnsConfig | indent 8 }}
+{{- end }}

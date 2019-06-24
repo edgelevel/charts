@@ -36,7 +36,7 @@ spec:
             - "20"
             - --operation-processors
             - "10"
-          image: {{ .Values.applicationController.image.repository }}:{{ .Values.applicationController.image.tag }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.applicationController.image.pullPolicy }}
           name: argocd-application-controller
           ports:
@@ -65,22 +65,22 @@ spec:
       volumes:
 {{ toYaml . | indent 8 }}
 {{- end }}
-{{- with .Values.nodeSelector }}
+{{- with .Values.applicationController.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
 {{- end }}
-{{- with .Values.affinity }}
+{{- with .Values.applicationController.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
 {{- end }}
-{{- with .Values.tolerations }}
+{{- with .Values.applicationController.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
 {{- end }}
-{{- if .Values.podDnsPolicy }}
-      dnsPolicy: {{ .Values.podDnsPolicy }}
+{{- if .Values.applicationController.podDnsPolicy }}
+      dnsPolicy: {{ .Values.applicationController.podDnsPolicy }}
 {{- end }}
-{{- if .Values.podDnsConfig }}
+{{- if .Values.applicationController.podDnsConfig }}
       dnsConfig:
-{{ toYaml .Values.podDnsConfig | indent 8 }}
+{{ toYaml .Values.applicationController.podDnsConfig | indent 8 }}
 {{- end }}
