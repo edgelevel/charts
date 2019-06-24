@@ -1,0 +1,93 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-server
+  labels:
+    app.kubernetes.io/name: {{ include "argo-cd.name" . }}-server
+    helm.sh/chart: {{ include "argo-cd.chart" . }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: {{ include "argo-cd.name" . }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "argo-cd.name" . }}-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "argo-cd.name" . }}-server
+        helm.sh/chart: {{ include "argo-cd.chart" . }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion }}
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: {{ include "argo-cd.name" . }}
+    spec:
+      serviceAccountName: argocd-server
+      initContainers:
+        - name: ui
+          image: {{ .Values.server.init.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.server.init.pullPolicy }}
+          command: [cp, -r, /app, /shared]
+          volumeMounts:
+          - mountPath: /shared
+            name: static-files
+      containers:
+        - name: argocd-server
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.server.image.pullPolicy }}
+          command: [argocd-server, --staticassets, /shared/app]
+          ports:
+          - containerPort: {{ .Values.server.containerPortHttp }}
+          - containerPort: {{ .Values.server.containerPortMetrics }}
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: {{ .Values.server.containerPortHttp }}
+            initialDelaySeconds: 3
+            periodSeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: {{ .Values.server.containerPortHttp }}
+            initialDelaySeconds: 3
+            periodSeconds: 30
+{{- with .Values.server.resources }}
+          resources:
+{{ toYaml . | indent 12 }}
+{{- end }}
+          volumeMounts:
+            - mountPath: /shared
+              name: static-files
+{{- with .Values.server.volumeMounts }}
+{{ toYaml . | indent 12 }}
+{{- end }}
+      volumes:
+        - emptyDir: {}
+          name: static-files
+{{- with .Values.server.volumes }}
+      volumes:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.server.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.server.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.server.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- if .Values.server.podDnsPolicy }}
+      dnsPolicy: {{ .Values.podDnsPolicy }}
+{{- end }}
+{{- if .Values.server.podDnsConfig }}
+      dnsConfig:
+{{ toYaml .Values.server.podDnsConfig | indent 8 }}
+{{- end }}
