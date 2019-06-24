@@ -36,7 +36,7 @@ spec:
           - "--appendonly"
           - "no"
           ports:
-          - containerPort: {{ .Values.server.containerPort }}
+          - containerPort: {{ .Values.redis.containerPort }}
 {{- with .Values.redis.resources }}
           resources:
 {{ toYaml . | indent 12 }}

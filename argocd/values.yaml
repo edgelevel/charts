@@ -44,7 +44,7 @@ redis:
   containerPort: 6379
   image:
     repository: redis
-    tag: v5.0.3
+    tag: 5.0.3
     pullPolicy: Always
 
 namespace: 
@@ -54,7 +54,7 @@ namespace:
 config:
 
   secret:
-    create: false
+    create: true
     admin:
       password:
       passwordMtime:

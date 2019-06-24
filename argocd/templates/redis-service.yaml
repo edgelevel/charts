@@ -15,7 +15,7 @@ spec:
   ports:
     - name: tcp-redis
       protocol: TCP
-      port: {{ .Values.redis.image.containerPort }}
-      targetPort: {{ .Values.redis.image.containerPort }}
+      port: {{ .Values.redis.containerPort }}
+      targetPort: {{ .Values.redis.containerPort }}
   selector:
     app.kubernetes.io/name: {{ include "argo-cd.name" . }}-redis
