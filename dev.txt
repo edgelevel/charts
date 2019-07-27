@@ -10,14 +10,5 @@ https://edgelevel.github.io/helm-charts/
 
 ---
 
-# publish
-git clone -b gh-pages git@github.com:edgelevel/helm-charts.git tmp-gh-pages
-cd tmp-gh-pages/
-helm lint ../argocd
-helm package ../argocd
-helm repo index .
-git add .
-git commit -m "release argocd"
-git push origin gh-pages
-cd ..
-rm -fr tmp-gh-pages/
+# TODO
+https://gist.github.com/niqdev/fffc1b27f50cbc6436e264b8d48a1b62
