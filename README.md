@@ -19,4 +19,7 @@ helm repo add edgelevel-public https://edgelevel.github.io/helm-charts
 ```bash
 # publish chart from local machine
 make publish chart=argocd
+
+# update argocd chart
+make update-argocd
 ```
