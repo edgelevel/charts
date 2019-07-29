@@ -16,7 +16,7 @@ publish: requirements
 # https://gist.github.com/niqdev/fffc1b27f50cbc6436e264b8d48a1b62
 .PHONY: update-argocd
 update-argocd:
-	./scripts/generate_templates_argocd_macos.sh
+	./scripts/generate_argocd_templates_macos.sh
 
 .PHONY: all
 all: requirements
