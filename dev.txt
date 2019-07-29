@@ -5,10 +5,3 @@ echo "helm-charts" > index.html
 git add index.html
 git commit -a -m "add index.html"
 git push origin -u gh-pages
-
-https://edgelevel.github.io/helm-charts/
-
----
-
-# TODO
-https://gist.github.com/niqdev/fffc1b27f50cbc6436e264b8d48a1b62
