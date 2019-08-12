@@ -12,14 +12,14 @@ helm repo add edgelevel-public https://edgelevel.github.io/helm-charts
 
 | Name | Version | Description |
 | ---- |:-------:| ----------- |
-| argocd | 1.1.1-0 | [Argo CD](https://argoproj.github.io/argo-cd/) is a declarative, GitOps continuous delivery tool for Kubernetes |
+| argocd | 1.1.2-0 | [Argo CD](https://argoproj.github.io/argo-cd/) is a declarative, GitOps continuous delivery tool for Kubernetes |
 
 ### Development
 
 ```bash
-# publish chart from local machine
-make publish chart=argocd
-
 # update argocd chart
 make update-argocd
+
+# publish chart from local machine
+make publish chart=argocd
 ```
