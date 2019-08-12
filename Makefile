@@ -1,5 +1,3 @@
-.DEFAULT_GOAL := all
-
 HELM := $(shell command -v helm 2> /dev/null)
 
 .PHONY: requirements
@@ -17,6 +15,3 @@ publish: requirements
 .PHONY: update-argocd
 update-argocd:
 	./scripts/generate_argocd_templates_macos.sh
-
-.PHONY: all
-all: requirements
