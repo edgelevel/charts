@@ -2,7 +2,15 @@ apiVersion: v1
 entries:
   argocd:
   - apiVersion: v1
-    created: "2019-07-29T11:53:10.203963+01:00"
+    created: "2019-08-12T17:14:49.495502+01:00"
+    description: Argo CD Helm chart for Kubernetes
+    digest: 1b40352345676b700c1b6fcbb40b487018f3d27992c922e2455a2951390454ff
+    name: argocd
+    urls:
+    - argocd-1.1.2-0.tgz
+    version: 1.1.2-0
+  - apiVersion: v1
+    created: "2019-08-12T17:14:49.494154+01:00"
     description: Argo CD Helm chart for Kubernetes
     digest: b7d2bcfcad07282fdf5c6c21d3cc6fb415ab073ed85fc63a89b51036919b7093
     name: argocd
@@ -10,11 +18,11 @@ entries:
     - argocd-1.1.1-0.tgz
     version: 1.1.1-0
   - apiVersion: v1
-    created: "2019-07-29T11:53:10.202479+01:00"
+    created: "2019-08-12T17:14:49.493368+01:00"
     description: Argo CD Helm chart for Kubernetes
     digest: 57f3c59f4421dc1132f13d5d410aa0d83b3504ffb19a4388ef633d18d5702ada
     name: argocd
     urls:
     - argocd-1.0.0-0.tgz
     version: 1.0.0-0
-generated: "2019-07-29T11:53:10.201001+01:00"
+generated: "2019-08-12T17:14:49.490902+01:00"
